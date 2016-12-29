@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 /**
- * Created by 5815-Disgruntled on 10/13/2016.
+ * Created by 5815-Disgruntled on 12/9/2016.
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name="Test Opmode2", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="Harrison OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class OPDrive extends LinearOpMode {
+public class HarrisonOPDrive extends LinearOpMode {
 
     //public Gamepad gamepad1 = new Gamepad();
     /* Declare OpMode members. */
@@ -82,28 +82,20 @@ public class OPDrive extends LinearOpMode {
                 rightServoPos = ((int)rightServoPos+1)%2;
 
             }*/
-            if(gamepad2.b){
+            if(gamepad2.right_bumper){
                 roberto.rightBaconator.setPosition(0);
             }
 
-            if(gamepad2.x){
+            if(gamepad2.right_trigger > 0.5){
                 roberto.rightBaconator.setPosition(1);
             }
 
-            if(gamepad2.dpad_right){
+            if(gamepad2.left_bumper){
                 roberto.leftBaconator.setPosition(0);
             }
 
-            if(gamepad2.dpad_left){
+            if(gamepad2.left_trigger > 0.5){
                 roberto.leftBaconator.setPosition(1);
-            }
-
-            if(gamepad2.dpad_down) {
-                roberto.yogiYodaForceBear.setPower(5);
-            }
-
-            if(gamepad2.dpad_up) {
-                roberto.yogiYodaForceBear.setPower(5);
             }
 
             // mecanum drive if right bumper is held, and tank drive if not

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.*;
@@ -37,10 +38,12 @@ public class HardwareTestbot
     public static DcMotor  leftFlywheelMotor = null;
     public static DcMotor  rightFlywheelMotor = null;
     public static DcMotor  throatMotor = null;
+    public static DcMotor   yogiYodaForceBear = null;
     public static Servo rightBaconator = null;
     public static Servo leftBaconator = null;
     // public static Servo    baconGetter = null;
     public static ColorSensor baconSensor = null;
+    public static ModernRoboticsI2cGyro sandwichSensor   = null;                    // Additional Gyro device
 
     //public static Gamepad gamepad1 = new Gamepad();
 
@@ -79,6 +82,7 @@ public class HardwareTestbot
 
         // Define and Initialize Motors & Sensors
         baconSensor = hwMap.colorSensor.get("bacon_sensor");
+        sandwichSensor = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("sandwich_sensor");
 
         // baconGetter = hwMap.servo.get("bacon_getter");
 
@@ -89,6 +93,7 @@ public class HardwareTestbot
         leftFlywheelMotor = hwMap.dcMotor.get("left_flywheel_motor");
         rightFlywheelMotor = hwMap.dcMotor.get("right_flywheel_motor");
         throatMotor = hwMap.dcMotor.get("throat_motor");
+        yogiYodaForceBear = hwMap.dcMotor.get("lift_motor");
 
         rightBaconator = hwMap.servo.get("right_baconator");
         leftBaconator = hwMap.servo.get("left_baconator");
@@ -109,6 +114,7 @@ public class HardwareTestbot
         leftFlywheelMotor.setPower(0);
         rightFlywheelMotor.setPower(0);
         throatMotor.setPower(0);
+        yogiYodaForceBear.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
