@@ -93,7 +93,7 @@ public class HardwareTestbot
         leftFlywheelMotor = hwMap.dcMotor.get("left_flywheel_motor");
         rightFlywheelMotor = hwMap.dcMotor.get("right_flywheel_motor");
         throatMotor = hwMap.dcMotor.get("throat_motor");
-        yogiYodaForceBear = hwMap.dcMotor.get("lift_motor");
+        yogiYodaForceBear = hwMap.dcMotor.get("yogi_yoda_force_bear");
 
         rightBaconator = hwMap.servo.get("right_baconator");
         leftBaconator = hwMap.servo.get("left_baconator");

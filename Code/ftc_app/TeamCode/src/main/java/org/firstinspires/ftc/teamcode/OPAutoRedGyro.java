@@ -26,7 +26,7 @@ public class OPAutoRedGyro extends LinearOpMode {
     /* Declare OpMode members. */
     HardwareTestbot roberto   = new HardwareTestbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
-    ModernRoboticsI2cGyro gyro    = null;                    // The Gyro device
+    //ModernRoboticsI2cGyro gyro    = null;                    // The Gyro device
 
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
@@ -233,7 +233,8 @@ public class OPAutoRedGyro extends LinearOpMode {
         */
         try {
 
-            encoderDrive(TURN_SPEED, inches, -inches, 10.0);  // S2: turn towards the first beacon
+          //  encoderDrive(TURN_SPEED, inches, -inches, 10.0);  // S2: turn towards the first beacon
+            gyroTurn(TURN_SPEED,inches);
 
         } catch (Exception ex) {
 
@@ -352,7 +353,7 @@ public class OPAutoRedGyro extends LinearOpMode {
         double robotError;
 
         // calculate error in -179 to +180 range  (
-        robotError = targetAngle - gyro.getIntegratedZValue();
+        robotError = targetAngle - roberto.sandwichSensor.getIntegratedZValue();
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;
