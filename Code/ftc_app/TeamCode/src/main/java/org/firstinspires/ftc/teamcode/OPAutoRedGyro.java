@@ -89,9 +89,10 @@ public class OPAutoRedGyro extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  63,  63, 10.0);  // S1: straight
-        //encoderDrive(TURN_SPEED,   -14, 14, 10.0);  // S2: turn towards the first beacon
-        turnLeft(12);
+        encoderDrive(DRIVE_SPEED,  -63,  -63, 10.0);  // S1: straight
+        // S2: turn towards the first beacon
+        gyroTurn(DRIVE_SPEED, roberto.sandwichSensor.getHeading() + 115);
+        gyroHold(DRIVE_SPEED, roberto.sandwichSensor.getHeading(), 0.5);
         encoderDrive(DRIVE_SPEED, 16, 16, 10.0);  // S3: drive towards beacon
         /*
         if(roberto.baconSensor.blue()>roberto.baconSensor.red()){
@@ -103,9 +104,9 @@ public class OPAutoRedGyro extends LinearOpMode {
         } */
         encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
         encoderDrive(DRIVE_SPEED, -16, -16, 10.0);  // S4: back away from beacon
-        turnRight((float) 25.5);  // S5: turn parallel to boundary
+        gyroTurn(DRIVE_SPEED, roberto.sandwichSensor.getHeading() -90);  // S5: turn parallel to boundary
         encoderDrive(DRIVE_SPEED, 48, 48, 10.0);  // S6: drive to the next beacon
-        turnLeft(26);  // S7: turn towards the second beacon
+        gyroTurn(DRIVE_SPEED, roberto.sandwichSensor.getHeading() + 90);  // S7: turn towards the second beacon
         encoderDrive(DRIVE_SPEED, 16, 16, 10.0);  // S8: drive towards the second beacon
         /*
         if(roberto.baconSensor.blue()>roberto.baconSensor.red()){
@@ -117,7 +118,7 @@ public class OPAutoRedGyro extends LinearOpMode {
         } */
         encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
         encoderDrive(DRIVE_SPEED, -16, -16, 10.0);  // S9: drive away from beacon
-        turnRight(12);
+        gyroTurn(DRIVE_SPEED, roberto.sandwichSensor.getHeading() + 45);
         encoderDrive(DRIVE_SPEED, -30, -30, 10.0);  // S10: Forward 24 Inches with 4 Sec timeout
 
 //        roberto.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.

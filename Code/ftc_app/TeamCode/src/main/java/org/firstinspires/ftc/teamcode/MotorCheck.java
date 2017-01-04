@@ -18,9 +18,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Test OPAutoRed", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@Autonomous(name="Motor Check", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class OPAutoRed extends LinearOpMode {
+public class MotorCheck extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTestbot roberto   = new HardwareTestbot();   // Use a Pushbot's hardware
@@ -69,43 +69,10 @@ public class OPAutoRed extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  63,  63, 10.0);  // S1: straight
-        //encoderDrive(TURN_SPEED,   -14, 14, 10.0);  // S2: turn towards the first beacon
-        turnLeft(12);
-        encoderDrive(DRIVE_SPEED, 16, 16, 10.0);  // S3: drive towards beacon
-        /*
-        if(roberto.baconSensor.blue()>roberto.baconSensor.red()){
-
-            roberto.baconGetter.setPosition(1);
-        }
-        else{
-            roberto.baconGetter.setPosition(0);
-        } */
-        encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-        encoderDrive(DRIVE_SPEED, -16, -16, 10.0);  // S4: back away from beacon
-        //shootBall(-.75, 3.5);
-        turnRight((float) 25.5);  // S5: turn parallel to boundary
-        encoderDrive(DRIVE_SPEED, 48, 48, 10.0);  // S6: drive to the next beacon
-        turnLeft(26);  // S7: turn towards the second beacon
-        encoderDrive(DRIVE_SPEED, 16, 16, 10.0);  // S8: drive towards the second beacon
-        /*
-        if(roberto.baconSensor.blue()>roberto.baconSensor.red()){
-
-            roberto.baconGetter.setPosition(1);
-        }
-        else{
-            roberto.baconGetter.setPosition(0);
-        } */
-        encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-        encoderDrive(DRIVE_SPEED, -16, -16, 10.0);  // S9: drive away from beacon
-        turnRight(12);
-        encoderDrive(DRIVE_SPEED, -30, -30, 10.0);  // S10: Forward 24 Inches with 4 Sec timeout
-
-//        roberto.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
-//        roberto.rightClaw.setPosition(0.0);
-//        sleep(1000);     // pause for servos to move
+        encoderDrive(DRIVE_SPEED,30,30,5.0);
+        encoderDrive(DRIVE_SPEED,-30,-30,5.0);
+        turnRight(15);
+        turnLeft(15);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -120,10 +87,8 @@ public class OPAutoRed extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,double leftInches, double rightInches,double timeoutS) throws InterruptedException {
-        int newFrontRightTarget;
-        int newFrontLeftTarget;
-        int newBackLeftTarget;
-        int newBackRightTarget;
+        int newLeftTarget;
+        int newRightTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -138,14 +103,14 @@ public class OPAutoRed extends LinearOpMode {
             roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = roberto.driveMotorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newFrontRightTarget = roberto.driveMotorFrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newBackRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newBackLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            roberto.driveMotorFrontLeft.setTargetPosition(newFrontLeftTarget);
-            roberto.driveMotorFrontRight.setTargetPosition(newFrontRightTarget);
-            roberto.driveMotorBackRight.setTargetPosition(newBackRightTarget);
-            roberto.driveMotorBackLeft.setTargetPosition(newBackLeftTarget);
+            newLeftTarget = roberto.driveMotorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = roberto.driveMotorFrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            // newRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            // newLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            roberto.driveMotorFrontLeft.setTargetPosition(newLeftTarget);
+            roberto.driveMotorFrontRight.setTargetPosition(newRightTarget);
+            roberto.driveMotorBackRight.setTargetPosition(newRightTarget);
+            roberto.driveMotorBackLeft.setTargetPosition(newLeftTarget);
 
             // Turn On RUN_TO_POSITION
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -169,8 +134,7 @@ public class OPAutoRed extends LinearOpMode {
                             roberto.driveMotorBackLeft.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newFrontRightTarget,
-                        newBackLeftTarget, newBackRightTarget);
+                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
                         roberto.driveMotorFrontLeft.getCurrentPosition(),
                         roberto.driveMotorFrontRight.getCurrentPosition(),
@@ -188,10 +152,10 @@ public class OPAutoRed extends LinearOpMode {
             roberto.driveMotorBackRight.setPower(0);
             roberto.driveMotorBackLeft.setPower(0);
 
-            roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            /*roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);*/
 
             // Turn off RUN_TO_POSITION
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -258,6 +222,6 @@ public class OPAutoRed extends LinearOpMode {
 
     }
 
-   
-    
+
+
 }
