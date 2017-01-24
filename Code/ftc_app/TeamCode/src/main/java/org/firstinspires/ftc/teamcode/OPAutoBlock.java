@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -18,9 +17,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Test OPAutoRed", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@Autonomous(name="Test OPAutoBlock", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 //@Disabled
-public class OPAutoRed extends LinearOpMode {
+public class OPAutoBlock extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTestbot roberto   = new HardwareTestbot();   // Use a Pushbot's hardware
@@ -31,7 +30,7 @@ public class OPAutoRed extends LinearOpMode {
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.7;
+    static final double     TURN_SPEED              = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,56 +68,18 @@ public class OPAutoRed extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  63,  63, 10.0);  // S1: straight
-        turnLeft(12);
-        encoderDrive(DRIVE_SPEED, 16, 16, 10.0);  // S3: drive towards beacon
-        if(roberto.baconSensor.red()>roberto.baconSensor.blue()){
-            encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-            encoderDrive(DRIVE_SPEED, -1, -1, 5.0); // back up from bacon
-            encoderStrafeDrive(DRIVE_SPEED, 20); // strafe to next bacon
-            if(roberto.baconSensor.red()>roberto.baconSensor.blue()){
-                encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-                encoderDrive(DRIVE_SPEED, -1, -1, 5.0); // back up from bacon
-            }
-            else{
-                encoderStrafeDrive(DRIVE_SPEED, 5.25); // strafe right 5.25 inches
-                encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-                encoderDrive(DRIVE_SPEED, -1, -1, 5.0); // back up from bacon
-            }
-        }
-        else{
-            encoderStrafeDrive(DRIVE_SPEED, 5.25); // strafe right 5.25 inches
-            encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-            encoderDrive(DRIVE_SPEED, -1, -1, 5.0); // back up from bacon
-            encoderStrafeDrive(DRIVE_SPEED, 20); // strafe to next bacon
-            if(roberto.baconSensor.red()>roberto.baconSensor.blue()){
-                encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-                encoderDrive(DRIVE_SPEED, -1, -1, 5.0); // back up from bacon
-            }
-            else{
-                encoderStrafeDrive(DRIVE_SPEED, 5.25); // strafe right 5.25 inches
-                encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-                encoderDrive(DRIVE_SPEED, -1, -1, 5.0); // back up from bacon
-            }
-        }
-        turnRight(12);
-        encoderDrive(DRIVE_SPEED, -30, -30, 10.0);
+        /*Step through each leg of the path,
+        Note: Reverse movement is obtained by setting a negative distance (not speed)
+        encoderStrafeDrive(DRIVE_SPEED, (double)15);*/
 
-        /*
-        encoderDrive(DRIVE_SPEED, -16, -16, 10.0);  // S4: back away from beacon
-        shootBall(-.75, 3.5);
-        turnRight(30);  // S5: turn parallel to boundary
-        encoderDrive(DRIVE_SPEED, 48, 48, 10.0);  // S6: drive to the next beacon
-        turnLeft(30);  // S7: turn towards the second beacon
-        encoderDrive(DRIVE_SPEED, 16, 16, 10.0);  // S8: drive towards the second beacon
+//        encoderDrive(DRIVE_SPEED,-40,-40,10);
+        //turnLeft(12);
+        sleep(10000);
+        encoderDrive(DRIVE_SPEED,-500,-500,10);
 
-        encoderDrive(DRIVE_SPEED, 1, 1, 5.0); // get bacon
-        encoderDrive(DRIVE_SPEED, -16, -16, 10.0);  // S9: drive away from beacon
-        turnRight(12);
-        encoderDrive(DRIVE_SPEED, -30, -30, 10.0);  // S10: Forward 24 Inches with 4 Sec timeout
-        */
+//        roberto.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
+//        roberto.rightClaw.setPosition(0.0);
+//        sleep(1000);     // pause for servos to move
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -133,28 +94,26 @@ public class OPAutoRed extends LinearOpMode {
      *  3) Driver stops the opmode running.
      */
     public void encoderDrive(double speed,double leftInches, double rightInches,double timeoutS) throws InterruptedException {
-        int newRightTarget;
         int newLeftTarget;
-        //int newBackLeftTarget;
-        //int newBackRightTarget;
+        int newRightTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
-            /*roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
+            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // Determine new target position, and pass to motor controller
             newLeftTarget = roberto.driveMotorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = roberto.driveMotorFrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            //newBackRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            //newBackLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            // newRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            // newLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             roberto.driveMotorFrontLeft.setTargetPosition(newLeftTarget);
             roberto.driveMotorFrontRight.setTargetPosition(newRightTarget);
             roberto.driveMotorBackRight.setTargetPosition(newRightTarget);
@@ -200,13 +159,6 @@ public class OPAutoRed extends LinearOpMode {
             roberto.driveMotorBackRight.setPower(0);
             roberto.driveMotorBackLeft.setPower(0);
 
-            /*
-            roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            */
-
             // Turn off RUN_TO_POSITION
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -214,6 +166,22 @@ public class OPAutoRed extends LinearOpMode {
             roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
+        }
+    }
+
+    public void shootBall(double speed, double timeoutS){
+        if (opModeIsActive()) {
+            runtime.reset();
+            while (opModeIsActive() && (runtime.seconds() < timeoutS)){
+                roberto.leftFlywheelMotor.setPower(speed);
+                roberto.rightFlywheelMotor.setPower(speed);
+                roberto.throatMotor.setPower(1);
+            }
+
+            roberto.leftFlywheelMotor.setPower(0);
+            roberto.rightFlywheelMotor.setPower(0);
+            roberto.throatMotor.setPower(0);
+
         }
     }
 
@@ -293,21 +261,6 @@ public class OPAutoRed extends LinearOpMode {
     }
 
 
-    public void shootBall(double speed, double timeoutS){
-        if (opModeIsActive()) {
-            runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() < timeoutS)){
-                roberto.leftFlywheelMotor.setPower(speed);
-                roberto.rightFlywheelMotor.setPower(speed);
-                roberto.throatMotor.setPower(1);
-            }
-
-            roberto.leftFlywheelMotor.setPower(0);
-            roberto.rightFlywheelMotor.setPower(0);
-
-        }
-    }
-
     public void turnLeft(float inches) {
 
         /*
@@ -348,6 +301,6 @@ public class OPAutoRed extends LinearOpMode {
 
     }
 
-   
-    
+
+
 }

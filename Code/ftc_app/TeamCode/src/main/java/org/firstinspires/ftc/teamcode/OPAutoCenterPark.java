@@ -72,9 +72,11 @@ public class OPAutoCenterPark extends LinearOpMode {
         Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderStrafeDrive(DRIVE_SPEED, (double)15);*/
 
-        encoderDrive(DRIVE_SPEED,-40,-40,10);
-        shootBall(-.75, 5);
-        encoderDrive(DRIVE_SPEED,-20,-20,10);
+//        encoderDrive(DRIVE_SPEED,-40,-40,10);
+        //turnLeft(12);
+        encoderDrive(DRIVE_SPEED,-38,-38,10);
+        shootBall((-.65*0.55), 5);
+        encoderDrive(DRIVE_SPEED,-30,-30,10);
 
 //        roberto.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
 //        roberto.rightClaw.setPosition(0.0);
@@ -179,6 +181,7 @@ public class OPAutoCenterPark extends LinearOpMode {
 
             roberto.leftFlywheelMotor.setPower(0);
             roberto.rightFlywheelMotor.setPower(0);
+            roberto.throatMotor.setPower(0);
 
         }
     }

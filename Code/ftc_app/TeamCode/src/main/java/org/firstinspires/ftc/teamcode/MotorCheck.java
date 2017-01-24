@@ -48,14 +48,14 @@ public class MotorCheck extends LinearOpMode {
 
         roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         idle();
 
         roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         // Send telemetry message to indicate successful Encoder reset
@@ -70,9 +70,7 @@ public class MotorCheck extends LinearOpMode {
         waitForStart();
 
         encoderDrive(DRIVE_SPEED,30,30,5.0);
-        encoderDrive(DRIVE_SPEED,-30,-30,5.0);
-        turnRight(15);
-        turnLeft(15);
+        encoderDrive(DRIVE_SPEED,-30, 30,5.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -92,31 +90,31 @@ public class MotorCheck extends LinearOpMode {
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
-            /*roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
+            //roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = roberto.driveMotorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = roberto.driveMotorFrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newLeftTarget = (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = (int)(rightInches * COUNTS_PER_INCH);
             // newRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
             // newLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             roberto.driveMotorFrontLeft.setTargetPosition(newLeftTarget);
             roberto.driveMotorFrontRight.setTargetPosition(newRightTarget);
-            roberto.driveMotorBackRight.setTargetPosition(newRightTarget);
-            roberto.driveMotorBackLeft.setTargetPosition(newLeftTarget);
+            //roberto.driveMotorBackRight.setTargetPosition(newRightTarget);
+            //roberto.driveMotorBackLeft.setTargetPosition(newLeftTarget);
 
             // Turn On RUN_TO_POSITION
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -126,7 +124,7 @@ public class MotorCheck extends LinearOpMode {
             roberto.driveMotorBackLeft.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            while (opModeIsActive() &&
+         /*   while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (       roberto.driveMotorFrontLeft.isBusy() &&
                             roberto.driveMotorFrontRight.isBusy()&&
@@ -144,7 +142,7 @@ public class MotorCheck extends LinearOpMode {
 
                 // Allow time for other processes to run.
                 idle();
-            }
+            } */
 
             // Stop all motion;
             roberto.driveMotorFrontLeft.setPower(0);
@@ -158,16 +156,16 @@ public class MotorCheck extends LinearOpMode {
             roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);*/
 
             // Turn off RUN_TO_POSITION
-            roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            //  sleep(250);   // optional pause after each move
+            sleep(250);   // optional pause after each move
         }
     }
 
-    public void shootBall(double speed, double timeoutS){
+    /*public void shootBall(double speed, double timeoutS){
         if (opModeIsActive()) {
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < timeoutS)){
@@ -188,7 +186,7 @@ public class MotorCheck extends LinearOpMode {
             call encoderDrive to turn to the left
             Order of parameters:
             double speed,double leftInches, double rightInches,double timeoutS
-        */
+
         try {
 
             encoderDrive(TURN_SPEED, -inches, inches, 10.0);  // S2: turn towards the first beacon
@@ -208,7 +206,7 @@ public class MotorCheck extends LinearOpMode {
 
         /*
             call encoderDrive to turn to the right
-        */
+
         try {
 
             encoderDrive(TURN_SPEED, inches, -inches, 10.0);  // S2: turn towards the first beacon
@@ -222,6 +220,6 @@ public class MotorCheck extends LinearOpMode {
 
     }
 
-
+*/
 
 }

@@ -52,6 +52,7 @@ public class HarrisonOPDrive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Drive", gamepad1.left_stick_x);
             /*telemetry.addData("Speed", "Gamepad2 launcher power: " + gamepad2.left_stick_y);
             telemetry.addData("Encoder", "Flywheel speed: " + (roberto.leftFlywheelMotor.getCurrentPosition() - prevFlywheelEncoder));*/
             telemetry.update();
@@ -59,8 +60,8 @@ public class HarrisonOPDrive extends LinearOpMode {
             //prevFlywheelEncoder = roberto.leftFlywheelMotor.getCurrentPosition();
 
             // launcher and intake motor power control
-            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y * .85);
-            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y * .85);
+            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.25);
+            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.25);
             roberto.throatMotor.setPower(-gamepad2.right_stick_y);
 
             /*if( gamepad2.left_bumper ) {
@@ -82,12 +83,14 @@ public class HarrisonOPDrive extends LinearOpMode {
                 rightServoPos = ((int)rightServoPos+1)%2;
 
             }*/
+
+            /*
             if(gamepad2.right_bumper){
-                roberto.rightBaconator.setPosition(0);
+                roberto.rightBaconator.setPosition(1);
             }
 
             if(gamepad2.right_trigger > 0.5){
-                roberto.rightBaconator.setPosition(1);
+                roberto.rightBaconator.setPosition(0);
             }
 
             if(gamepad2.left_bumper){
@@ -96,7 +99,7 @@ public class HarrisonOPDrive extends LinearOpMode {
 
             if(gamepad2.left_trigger > 0.5){
                 roberto.leftBaconator.setPosition(1);
-            }
+            }*/
 
             // mecanum drive if right bumper is held, and tank drive if not
             if( gamepad1.right_bumper ) {
@@ -110,11 +113,11 @@ public class HarrisonOPDrive extends LinearOpMode {
                 );
 
                 roberto.driveMotorBackLeft.setPower(
-                        -gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b)
+                        .7*(-gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b))
                 );
 
                 roberto.driveMotorBackRight.setPower(
-                        -gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b)
+                        .7*(-gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b))
                 );
                 telemetry.addData("Debug", "In mecanum drive");
                 telemetry.update();
@@ -124,7 +127,7 @@ public class HarrisonOPDrive extends LinearOpMode {
                 roberto.driveMotorFrontLeft.setPower(-gamepad1.left_stick_y);
                 roberto.driveMotorFrontRight.setPower(-gamepad1.right_stick_y);
                 roberto.driveMotorBackRight.setPower(-gamepad1.right_stick_y);
-                roberto.driveMotorBackLeft.setPower(-gamepad1.left_stick_y);
+                roberto.driveMotorBackLeft.setPower(-gamepad1.left_stick_y );
                 telemetry.addData("Debug", "In tank drive");
                 telemetry.update();
             }

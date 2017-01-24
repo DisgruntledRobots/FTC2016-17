@@ -59,8 +59,8 @@ public class OPDrive extends LinearOpMode {
             //prevFlywheelEncoder = roberto.leftFlywheelMotor.getCurrentPosition();
 
             // launcher and intake motor power control
-            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y * .85);
-            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y * .85);
+            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y);
+            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y);
             roberto.throatMotor.setPower(-gamepad2.right_stick_y);
 
             /*if( gamepad2.left_bumper ) {
@@ -82,6 +82,8 @@ public class OPDrive extends LinearOpMode {
                 rightServoPos = ((int)rightServoPos+1)%2;
 
             }*/
+
+            /*
             if(gamepad2.b){
                 roberto.rightBaconator.setPosition(0);
             }
@@ -96,8 +98,9 @@ public class OPDrive extends LinearOpMode {
 
             if(gamepad2.dpad_left){
                 roberto.leftBaconator.setPosition(1);
-            }
+            }*/
 
+            /*
             if(gamepad2.dpad_down) {
                 roberto.yogiYodaForceBear.setPower(5);
             }
@@ -105,6 +108,7 @@ public class OPDrive extends LinearOpMode {
             if(gamepad2.dpad_up) {
                 roberto.yogiYodaForceBear.setPower(5);
             }
+            */
 
             // mecanum drive if right bumper is held, and tank drive if not
             if( gamepad1.right_bumper ) {
@@ -118,11 +122,11 @@ public class OPDrive extends LinearOpMode {
                 );
 
                 roberto.driveMotorBackLeft.setPower(
-                        -gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b)
+                        .7*(-gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b))
                 );
 
                 roberto.driveMotorBackRight.setPower(
-                        -gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b)
+                        .7*(-gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b))
                 );
                 telemetry.addData("Debug", "In mecanum drive");
                 telemetry.update();
