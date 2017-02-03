@@ -1,21 +1,20 @@
 package org.firstinspires.ftc.teamcode;
 
-/**
- * Created by 5815-Disgruntled on 1/24/2017.
- */
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="OPEpisode1_Straight", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+/**
+ * Created by 5815-Disgruntled on 1/24/2017.
+ */
 
-public class OPEpisode1_Straight extends LinearOpMode{
+@Autonomous(name="OPBringHomeRedBacon", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
+public class OPBringHomeRedBacon extends LinearOpMode{
     /* Declare OpMode members. */
     HardwareTestbot roberto   = new HardwareTestbot();   // Use a Pushbot's hardware
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: TETRIX Motor Encoder
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
@@ -24,50 +23,58 @@ public class OPEpisode1_Straight extends LinearOpMode{
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
+    static int initGray                        = 0;
 
     @Override
     public void runOpMode() throws InterruptedException{
 
-         /*
+
+    /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
-        roberto.init(hardwareMap);
+    roberto.init(hardwareMap);
 
-        // Send telemetry message to signify roberto waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
-        telemetry.update();
+    // Send telemetry message to signify roberto waiting;
+    telemetry.addData("Status", "Resetting Encoders");    //
+    telemetry.update();
 
-        roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        idle();
+    roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    idle();
 
-        roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+//        roberto.racistSensor.enableLed(true);
+        roberto.baconSensor.enableLed(true);
+
+//        lessThanWhite = roberto.racistSensor.red() + roberto.racistSensor.blue() + roberto.racistSensor.green();
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
-                roberto.driveMotorFrontLeft.getCurrentPosition(),
-                roberto.driveMotorFrontRight.getCurrentPosition(),
-                roberto.driveMotorBackRight.getCurrentPosition(),
-                roberto.driveMotorBackLeft.getCurrentPosition());
-        telemetry.update();
+    telemetry.addData("Path0",  "Starting at %7d :%7d",
+            roberto.driveMotorFrontLeft.getCurrentPosition(),
+            roberto.driveMotorFrontRight.getCurrentPosition(),
+            roberto.driveMotorBackRight.getCurrentPosition(),
+            roberto.driveMotorBackLeft.getCurrentPosition());
+    telemetry.update();
 
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+    // Wait for the game to start (driver presses PLAY)
+    waitForStart();
 
-        //Insert movement code here
 
-        encoderDrive(DRIVE_SPEED, -10, -10, 10);
+    //Insert movement code here
 
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-    }
+        doMovement();
+
+
+    telemetry.addData("Path", "Complete");
+    telemetry.update();
+}
     public void encoderDrive(double speed,double leftInches, double rightInches,double timeoutS) throws InterruptedException {
         int newFrontLeftTarget;
         int newFrontRightTarget;
@@ -146,4 +153,96 @@ public class OPEpisode1_Straight extends LinearOpMode{
             //  sleep(250);   // optional pause after each move
         }
     }
-}
+
+    public void doMovement() throws InterruptedException{
+
+        //get initial color sensor value
+        initGray = roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue();
+
+//        * forward from wall
+
+        encoderDrive(DRIVE_SPEED, 20, 20, 10);
+
+//        * shoot
+
+        shootBall(-DRIVE_SPEED, 3);
+
+//        * forward to align with wall
+
+        encoderDrive(DRIVE_SPEED, 23, 23, 10);
+
+//        * 90 degrees left
+
+        encoderDrive(TURN_SPEED, -22, 22, 10);
+
+//        * forward to hit wall
+
+        encoderDrive(DRIVE_SPEED, 48, 48, 10);
+
+//        * 90 degrees right
+
+        encoderDrive(TURN_SPEED, 22, -22, 10);
+
+//        * forward/backward to match white line
+        notGray();
+
+//        * forward to next white line
+
+        encoderDrive(DRIVE_SPEED, 20, 20, 10);
+
+//        * 45 degrees right
+
+        encoderDrive(DRIVE_SPEED, 12, -12, 10);
+
+//        * find boundary
+
+        while(opModeIsActive()){
+            //I'm beginning to become suspicious of all these opModeIsActive() loops
+        }
+
+//        * 90 degrees right
+
+        encoderDrive(DRIVE_SPEED, 22, -22, 10);
+
+//        * forward to cap ball
+
+        encoderDrive(DRIVE_SPEED, 40, 40, 10);
+
+    }
+    public void shootBall(double speed, double timeoutS){
+        if (opModeIsActive()) {
+            runtime.reset();
+            while (opModeIsActive() && (runtime.seconds() < timeoutS)){
+                roberto.leftFlywheelMotor.setPower(speed);
+                roberto.rightFlywheelMotor.setPower(speed);
+                roberto.throatMotor.setPower(1);
+            }
+
+            roberto.leftFlywheelMotor.setPower(0);
+            roberto.rightFlywheelMotor.setPower(0);
+            roberto.throatMotor.setPower(0);
+
+        }
+    }
+
+    public boolean isStillGray() {
+
+        int rgbValue = roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue()
+        while(opModeIsActive()){
+
+            if( Math.abs(rgbValue - initGray) > 20 ) {
+
+                return false;
+
+            } else {
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+    }
+

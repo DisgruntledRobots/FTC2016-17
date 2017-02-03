@@ -43,6 +43,7 @@ public class HardwareTestbot
     //public static Servo leftBaconator = null;
     // public static Servo    baconGetter = null;
     public static ColorSensor baconSensor = null;
+    public static ColorSensor racistSensor = null;
     public static ModernRoboticsI2cGyro sandwichSensor   = null;                    // Additional Gyro device
 
     //public static Gamepad gamepad1 = new Gamepad();
@@ -71,6 +72,7 @@ public class HardwareTestbot
 
         // Define and Initialize Motors & Sensors
         baconSensor = hwMap.colorSensor.get("bacon_sensor");
+        racistSensor = hwMap.colorSensor.get("racist_sensor");
         sandwichSensor = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("sandwich_sensor");
 
         // baconGetter = hwMap.servo.get("bacon_getter");
@@ -111,6 +113,8 @@ public class HardwareTestbot
         driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        baconSensor.enableLed(true);
 
     }
 

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 /**
  * Created by 5815-Disgruntled on 1/24/2017.
  */
-
+@Autonomous(name="OPEpisode2_TurnLeft", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 public class OPEpisode2_TurnLeft extends LinearOpMode{
 
     /* Declare OpMode members. */
@@ -59,14 +59,17 @@ public class OPEpisode2_TurnLeft extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //Insert movement code 'ere
+        //Insert movement code here
+        encoderDrive(TURN_SPEED,-12,12,10);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
     public void encoderDrive(double speed,double leftInches, double rightInches,double timeoutS) throws InterruptedException {
-        int newLeftTarget;
-        int newRightTarget;
+        int newFrontLeftTarget;
+        int newFrontRightTarget;
+        int newBackLeftTarget;
+        int newBackRightTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -81,14 +84,14 @@ public class OPEpisode2_TurnLeft extends LinearOpMode{
             roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = roberto.driveMotorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = roberto.driveMotorFrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            // newRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            // newLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            roberto.driveMotorFrontLeft.setTargetPosition(newLeftTarget);
-            roberto.driveMotorFrontRight.setTargetPosition(newRightTarget);
-            roberto.driveMotorBackRight.setTargetPosition(newRightTarget);
-            roberto.driveMotorBackLeft.setTargetPosition(newLeftTarget);
+            newFrontLeftTarget = roberto.driveMotorFrontLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH * 3/2);
+            newFrontRightTarget = roberto.driveMotorFrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH * 3/2);
+            newBackRightTarget = roberto.driveMotorBackRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newBackLeftTarget = roberto.driveMotorBackLeft.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            roberto.driveMotorFrontLeft.setTargetPosition(newFrontLeftTarget);
+            roberto.driveMotorFrontRight.setTargetPosition(newFrontRightTarget);
+            roberto.driveMotorBackRight.setTargetPosition(newBackRightTarget);
+            roberto.driveMotorBackLeft.setTargetPosition(newBackLeftTarget);
 
             // Turn On RUN_TO_POSITION
             roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -100,8 +103,8 @@ public class OPEpisode2_TurnLeft extends LinearOpMode{
             runtime.reset();
             roberto.driveMotorFrontLeft.setPower(Math.abs(speed));
             roberto.driveMotorFrontRight.setPower(Math.abs(speed));
-            roberto.driveMotorBackRight.setPower(Math.abs(speed));
-            roberto.driveMotorBackLeft.setPower(Math.abs(speed));
+            roberto.driveMotorBackRight.setPower(Math.abs(speed * 2/3));
+            roberto.driveMotorBackLeft.setPower(Math.abs(speed * 2/3));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
@@ -112,7 +115,8 @@ public class OPEpisode2_TurnLeft extends LinearOpMode{
                             roberto.driveMotorBackLeft.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newBackRightTarget,
+                                    newBackLeftTarget, newBackRightTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
                         roberto.driveMotorFrontLeft.getCurrentPosition(),
                         roberto.driveMotorFrontRight.getCurrentPosition(),

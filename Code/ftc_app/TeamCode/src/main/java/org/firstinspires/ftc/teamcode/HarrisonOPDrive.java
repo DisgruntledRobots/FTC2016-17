@@ -60,8 +60,8 @@ public class HarrisonOPDrive extends LinearOpMode {
             //prevFlywheelEncoder = roberto.leftFlywheelMotor.getCurrentPosition();
 
             // launcher and intake motor power control
-            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.25);
-            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.25);
+            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.30);
+            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.30);
             roberto.throatMotor.setPower(-gamepad2.right_stick_y);
 
             /*if( gamepad2.left_bumper ) {
@@ -100,6 +100,18 @@ public class HarrisonOPDrive extends LinearOpMode {
             if(gamepad2.left_trigger > 0.5){
                 roberto.leftBaconator.setPosition(1);
             }*/
+
+            if(gamepad2.right_trigger > 0.1) {
+
+                roberto.yogiYodaForceBear.setPower(gamepad2.right_trigger);
+
+            }
+
+            if(gamepad2.left_trigger > 0.1) {
+
+                roberto.yogiYodaForceBear.setPower(-gamepad2.left_trigger);
+
+            }
 
             // mecanum drive if right bumper is held, and tank drive if not
             if( gamepad1.right_bumper ) {
