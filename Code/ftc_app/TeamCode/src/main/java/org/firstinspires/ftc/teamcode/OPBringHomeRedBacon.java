@@ -227,21 +227,23 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
     public boolean isStillGray() {
 
-        int rgbValue = roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue()
+        boolean isWhite = false;
+        int rgbValue = roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue();
         while(opModeIsActive()){
 
             if( Math.abs(rgbValue - initGray) > 20 ) {
 
-                return false;
+                isWhite = false;
 
             } else {
 
-                return true;
+                isWhite = true;
 
             }
 
         }
 
+        return isWhite;
     }
 
     }
