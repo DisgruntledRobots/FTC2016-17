@@ -25,6 +25,8 @@ public class HarrisonOPDrive extends LinearOpMode {
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
 
+    private double multiplyer = 1.0;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -32,6 +34,8 @@ public class HarrisonOPDrive extends LinearOpMode {
         telemetry.update();
 
         roberto.init(hardwareMap);
+
+
 
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -60,8 +64,8 @@ public class HarrisonOPDrive extends LinearOpMode {
             //prevFlywheelEncoder = roberto.leftFlywheelMotor.getCurrentPosition();
 
             // launcher and intake motor power control
-            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.30);
-            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.30);
+            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.65);
+            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.65);
             roberto.throatMotor.setPower(-gamepad2.right_stick_y);
 
             /*if( gamepad2.left_bumper ) {
@@ -101,15 +105,28 @@ public class HarrisonOPDrive extends LinearOpMode {
                 roberto.leftBaconator.setPosition(1);
             }*/
 
-            if(gamepad2.right_trigger > 0.1) {
+            if (gamepad1.x == true){
 
-                roberto.yogiYodaForceBear.setPower(gamepad2.right_trigger);
+                multiplyer = -0.20;
 
             }
 
-            if(gamepad2.left_trigger > 0.1) {
+            if (gamepad1.y == true) {
+
+                multiplyer = 1.0;
+
+            }
+
+            if(gamepad2.right_trigger > 0.2) {
+
+                roberto.yogiYodaForceBear.setPower(gamepad2.right_trigger);
+
+            }else if(gamepad2.left_trigger > 0.2){
 
                 roberto.yogiYodaForceBear.setPower(-gamepad2.left_trigger);
+            }else{
+
+                roberto.yogiYodaForceBear.setPower(0);
 
             }
 
@@ -117,29 +134,29 @@ public class HarrisonOPDrive extends LinearOpMode {
             if( gamepad1.right_bumper ) {
 
                 roberto.driveMotorFrontRight.setPower(
-                        -gamepad1.left_stick_y - gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b)
+                        (-gamepad1.left_stick_y - gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b))*multiplyer
                 );
 
                 roberto.driveMotorFrontLeft.setPower(
-                        -gamepad1.left_stick_y + gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b)
+                        (-gamepad1.left_stick_y + gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b))*multiplyer
                 );
 
                 roberto.driveMotorBackLeft.setPower(
-                        .7*(-gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b))
+                        (-gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (roberto.a + roberto.b))*multiplyer
                 );
 
                 roberto.driveMotorBackRight.setPower(
-                        .7*(-gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b))
+                        (-gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (roberto.a + roberto.b))*multiplyer
                 );
                 telemetry.addData("Debug", "In mecanum drive");
                 telemetry.update();
 
             } else {
 
-                roberto.driveMotorFrontLeft.setPower(-gamepad1.left_stick_y);
-                roberto.driveMotorFrontRight.setPower(-gamepad1.right_stick_y);
-                roberto.driveMotorBackRight.setPower(-gamepad1.right_stick_y);
-                roberto.driveMotorBackLeft.setPower(-gamepad1.left_stick_y );
+                roberto.driveMotorFrontLeft.setPower((-gamepad1.left_stick_y)*multiplyer);
+                roberto.driveMotorFrontRight.setPower((-gamepad1.right_stick_y)*multiplyer);
+                roberto.driveMotorBackRight.setPower((-gamepad1.right_stick_y)*multiplyer);
+                roberto.driveMotorBackLeft.setPower((-gamepad1.left_stick_y )*multiplyer);
                 telemetry.addData("Debug", "In tank drive");
                 telemetry.update();
             }

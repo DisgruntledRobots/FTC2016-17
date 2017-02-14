@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -22,16 +25,22 @@ public class OPEpisode4_BlueBaconPush extends LinearOpMode{
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
+    private int count = 0;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        int red = 0;
+        int green = 0;
+        int blue = 0;
          /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
         roberto.init(hardwareMap);
+        //roberto.baconSensor.enableLed(false);
+        //roberto.racistSensor.enableLed(false);
 
         // Send telemetry message to signify roberto waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -56,18 +65,44 @@ public class OPEpisode4_BlueBaconPush extends LinearOpMode{
                 roberto.driveMotorBackRight.getCurrentPosition(),
                 roberto.driveMotorBackLeft.getCurrentPosition());
         telemetry.update();
-
+        roberto.sandwichSensor.calibrate();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         //Insert movement code here
-        if (roberto.baconSensor.blue() > roberto.baconSensor.red()) {
+
+        while(opModeIsActive()){
+            //telemetry.addData("Clear", roberto.racistSensor.alpha());
+            telemetry.addData("color class type: ", roberto.baconSensor.getClass());
+            telemetry.addData("color class type: ", roberto.racistSensor.getClass());
+            telemetry.addData("gyro class type: ", roberto.sandwichSensor.getClass());
+            telemetry.addData("red: ",roberto.baconSensor.red());
+            telemetry.addData("red: ",roberto.racistSensor.red());
+            telemetry.addData("heading: ",roberto.sandwichSensor.getHeading());
+            telemetry.update();
+
+            /* if(count % 2 == 0) {
+
+                telemetry.addData("Even: ","Yes");
+
+            } else {
+
+                telemetry.addData("Even: ","No)");
+
+            } */
+
+            //red = roberto.racistSensor.red();
+            //blue = roberto.racistSensor.blue();
+            //green = roberto.racistSensor.green();
+            count++;
+        }
+/*        if (roberto.baconSensor.blue() > roberto.baconSensor.red()) {
             encoderDrive(DRIVE_SPEED, 2, 2, 5.0); // get bacon
             encoderDrive(DRIVE_SPEED, -2, -2, 5.0); // back up from bacon
 
             telemetry.addData("Path", "Complete");
             telemetry.update();
-        }
+        }*/
     }
     public void encoderDrive(double speed,double leftInches, double rightInches,double timeoutS) throws InterruptedException {
         int newFrontLeftTarget;

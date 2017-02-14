@@ -49,17 +49,17 @@ public class GyroTestOPDrive extends LinearOpMode {
         telemetry.addData(">", "Calibrating Gyro");    //
         telemetry.update();
 
-        roberto.sandwichSensor.calibrate();
+        //roberto.sandwichSensor.calibrate();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // make sure the gyro is calibrated before continuing
-        while (!isStopRequested() && roberto.sandwichSensor.isCalibrating())  {
+        /*while (!isStopRequested() && roberto.sandwichSensor.isCalibrating())  {
             sleep(50);
             idle();
-        }
+        }*/
 
         telemetry.addData(">", "Robot Ready.");    //
         telemetry.update();
@@ -70,12 +70,12 @@ public class GyroTestOPDrive extends LinearOpMode {
         roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Wait for the game to start (Display Gyro value), and reset gyro before we move..
-        while (!isStarted()) {
+        /*while (!isStarted()) {
             telemetry.addData(">", "Robot Heading = %d", roberto.sandwichSensor.getIntegratedZValue());
             telemetry.update();
             idle();
         }
-        roberto.sandwichSensor.resetZAxisIntegrator();
+        roberto.sandwichSensor.resetZAxisIntegrator();*/
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

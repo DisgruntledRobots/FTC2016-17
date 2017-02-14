@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.*;
@@ -9,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 
 
 /**
@@ -42,9 +45,10 @@ public class HardwareTestbot
     //public static Servo rightBaconator = null;
     //public static Servo leftBaconator = null;
     // public static Servo    baconGetter = null;
-    public static ColorSensor baconSensor = null;
-    public static ColorSensor racistSensor = null;
-    public static ModernRoboticsI2cGyro sandwichSensor   = null;                    // Additional Gyro device
+    public static ColorSensor baconSensor;
+    public static ColorSensor racistSensor;
+    public static GyroSensor sandwichSensor;                    // Additional Gyro device
+    public static DistanceSensor XCountrySensor;
 
     //public static Gamepad gamepad1 = new Gamepad();
 
@@ -71,9 +75,13 @@ public class HardwareTestbot
         hwMap = ahwMap;
 
         // Define and Initialize Motors & Sensors
-        baconSensor = hwMap.colorSensor.get("bacon_sensor");
+        //racistSensor = (ModernRoboticsI2cColorSensor)hwMap.colorSensor.get("racist_sensor");
         racistSensor = hwMap.colorSensor.get("racist_sensor");
-        sandwichSensor = (ModernRoboticsI2cGyro)hwMap.gyroSensor.get("sandwich_sensor");
+        racistSensor.setI2cAddress(I2cAddr.create8bit(0x3c));
+        baconSensor = hwMap.colorSensor.get("bacon_sensor");
+        baconSensor.setI2cAddress(I2cAddr.create8bit(0x2c));
+        sandwichSensor = hwMap.gyroSensor.get("sandwich_sensor");
+        XCountrySensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "xc_sensor");
 
         // baconGetter = hwMap.servo.get("bacon_getter");
 
@@ -113,8 +121,10 @@ public class HardwareTestbot
         driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFlywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFlywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        baconSensor.enableLed(true);
+        //racistSensor.enableLed(true);
 
     }
 
