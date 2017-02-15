@@ -281,7 +281,15 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
 //        * forward to next white line
 
-        encoderDrive(TURN_SPEED, -10, -10, 10);
+//        * forward halfway to next white line
+        encoderDrive(TURN_SPEED, -6, -6, 10);
+
+//        * strafe into wall and strafe away to straighten robot
+        encoderStrafe(TURN_SPEED,1);
+        encoderStrafe(TURN_SPEED,0.5);
+
+//        * all the way to next white line
+        encoderDrive(TURN_SPEED, -4, -4, 10);
 
         roberto.driveMotorFrontRight.setPower(-0.4);
         roberto.driveMotorFrontLeft.setPower(-0.4);
