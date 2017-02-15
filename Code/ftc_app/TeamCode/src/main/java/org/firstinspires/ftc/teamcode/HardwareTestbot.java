@@ -48,7 +48,8 @@ public class HardwareTestbot
     public static ColorSensor baconSensor;
     public static ColorSensor racistSensor;
     public static GyroSensor sandwichSensor;                    // Additional Gyro device
-    public static DistanceSensor XCountrySensor;
+    //public static ModernRoboticsI2cRangeSensor XCountrySensor;
+    //public static UltrasonicSensor XCountrySensor;
 
     //public static Gamepad gamepad1 = new Gamepad();
 
@@ -81,7 +82,8 @@ public class HardwareTestbot
         baconSensor = hwMap.colorSensor.get("bacon_sensor");
         baconSensor.setI2cAddress(I2cAddr.create8bit(0x2c));
         sandwichSensor = hwMap.gyroSensor.get("sandwich_sensor");
-        XCountrySensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "xc_sensor");
+        //XCountrySensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "xc_sensor");
+        //XCountrySensor = hwMap.ultrasonicSensor.get("xc_sensor");
 
         // baconGetter = hwMap.servo.get("bacon_getter");
 

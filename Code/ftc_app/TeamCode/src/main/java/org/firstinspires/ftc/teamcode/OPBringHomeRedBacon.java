@@ -5,6 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+/*import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.I2cAddr;
+import com.qualcomm.robotcore.hardware.I2cDevice;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchImpl;*/
 
 /**
  * Created by 5815-Disgruntled on 1/24/2017.
@@ -203,13 +211,23 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
         encoderDrive(TURN_SPEED, -11, 11, 10);
 
-//        * forward to hit wall
+//        * forward to near corner vortex
 
-        encoderDrive(DRIVE_SPEED, -36, -36, 10);
+        encoderDrive(DRIVE_SPEED, -24, -24, 10);
 
 //        * 90 degrees right
 
         encoderDrive(TURN_SPEED, 24, -24, 10);
+
+        encoderDrive(DRIVE_SPEED,-4,-4,10);
+
+//        * strafe into wall
+        encoderStrafe(TURN_SPEED,1.8);
+
+//        * back away from wall - work in progress
+        //roberto.XCountrySensor.getUltrasonicLevel();
+
+
 
 //        * forward/backward to match white line
 
@@ -229,6 +247,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
             }
         }
 
+
 //        * strafe right to bacon
 
         encoderStrafe(TURN_SPEED, 0.6);
@@ -244,7 +263,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
             telemetry.addData("Blue: ",roberto.baconSensor.blue());
             telemetry.addData("Count: ", count);
             telemetry.update();
-            sleep(100);
+            sleep(1000);
             count++;
         }
 
