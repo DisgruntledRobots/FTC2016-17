@@ -286,7 +286,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
 //        * strafe into wall and strafe away to straighten robot
         encoderStrafe(TURN_SPEED,1);
-        encoderStrafe(TURN_SPEED,0.5);
+        encoderStrafe(-TURN_SPEED,0.5);
 
 //        * all the way to next white line
         encoderDrive(TURN_SPEED, -4, -4, 10);
