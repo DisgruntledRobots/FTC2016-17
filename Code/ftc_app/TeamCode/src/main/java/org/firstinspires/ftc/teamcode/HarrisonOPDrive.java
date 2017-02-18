@@ -64,8 +64,8 @@ public class HarrisonOPDrive extends LinearOpMode {
             //prevFlywheelEncoder = roberto.leftFlywheelMotor.getCurrentPosition();
 
             // launcher and intake motor power control
-            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.65);
-            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.65);
+            roberto.leftFlywheelMotor.setPower(gamepad2.left_stick_y*0.50);
+            roberto.rightFlywheelMotor.setPower(gamepad2.left_stick_y*0.50);
             roberto.throatMotor.setPower(-gamepad2.right_stick_y);
 
             /*if( gamepad2.left_bumper ) {

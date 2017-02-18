@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.*;
@@ -12,6 +13,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
+import com.qualcomm.robotcore.hardware.I2cDevice;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchImpl;
+
 
 
 /**
@@ -48,8 +53,13 @@ public class HardwareTestbot
     public static ColorSensor baconSensor;
     public static ColorSensor racistSensor;
     public static GyroSensor sandwichSensor;                    // Additional Gyro device
-    //public static ModernRoboticsI2cRangeSensor XCountrySensor;
-    //public static UltrasonicSensor XCountrySensor;
+    //public static ModernRoboticsI2cRangeSensor XCSensor;
+    //public static UltrasonicSensor XCSensor;
+
+    I2cAddr RANGE1ADDRESS = new I2cAddr(0x14); //Default I2C address for MR Range (7-bit)
+
+    public I2cDevice RANGE1;
+    public I2cDeviceSynch RANGE1Reader;
 
     //public static Gamepad gamepad1 = new Gamepad();
 
@@ -82,8 +92,11 @@ public class HardwareTestbot
         baconSensor = hwMap.colorSensor.get("bacon_sensor");
         baconSensor.setI2cAddress(I2cAddr.create8bit(0x2c));
         sandwichSensor = hwMap.gyroSensor.get("sandwich_sensor");
-        //XCountrySensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "xc_sensor");
-        //XCountrySensor = hwMap.ultrasonicSensor.get("xc_sensor");
+        //XCSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "xc_sensor");
+        //XCSensor = hwMap.ultrasonicSensor.get("xc_sensor");
+        //RANGE1 = hwMap.i2cDevice.get("xc_sensor");
+        //RANGE1Reader = new I2cDeviceSynchImpl(RANGE1, RANGE1ADDRESS, false);
+        //RANGE1Reader.engage();
 
         // baconGetter = hwMap.servo.get("bacon_getter");
 

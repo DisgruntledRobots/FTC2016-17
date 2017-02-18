@@ -1,25 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDevice;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynchImpl;
-
-import static org.firstinspires.ftc.teamcode.HardwareTestbot.sandwichSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 /**
- * Created by 5815-Disgruntled on 1/24/2017.
+ * Created by 5815-Disgruntled on 2/15/2017.
  */
 
-@Autonomous(name="OPBringHomeRedBacon", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@Autonomous(name="OPBringHomeBlueBacon", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
-public class OPBringHomeRedBacon extends LinearOpMode{
+public class OPBringHomeBlueBacon extends LinearOpMode {
     /* Declare OpMode members. */
     HardwareTestbot roberto   = new HardwareTestbot();   // Use a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
@@ -40,32 +36,32 @@ public class OPBringHomeRedBacon extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
 
-    //rangeInit();
+        //rangeInit();
     /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
-    roberto.init(hardwareMap);
+        roberto.init(hardwareMap);
 
-    // Send telemetry message to signify roberto waiting;
-    telemetry.addData("Status", "Resetting Encoders");    //
-    telemetry.update();
+        // Send telemetry message to signify roberto waiting;
+        telemetry.addData("Status", "Resetting Encoders");    //
+        telemetry.update();
 
-    roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    idle();
+        roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        idle();
 
-    roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         roberto.racistSensor.enableLed(true);
         roberto.baconSensor.enableLed(true);
 
-        sandwichSensor.calibrate();
+        roberto.sandwichSensor.calibrate();
 
         //get initial color sensor value
         initGray = roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue();
@@ -75,25 +71,24 @@ public class OPBringHomeRedBacon extends LinearOpMode{
             telemetry.addData("Blue: ",roberto.baconSensor.blue());
             telemetry.addData("Init Gray: ", initGray);
             telemetry.addData("Racist Val: ", roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue());
-            telemetry.addData("Heading: ", sandwichSensor.getHeading());
-            telemetry.addData("Integ Z Val: ",((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue());
+            telemetry.addData("Heading: ",roberto.sandwichSensor.getHeading());
             telemetry.update();
             idle();
         }
-        sandwichSensor.resetZAxisIntegrator();
+        roberto.sandwichSensor.resetZAxisIntegrator();
 
-    // Wait for the game to start (driver presses PLAY)
-    // waitForStart();
+        // Wait for the game to start (driver presses PLAY)
+        // waitForStart();
 
 
-    //Insert movement code here
+        //Insert movement code here
 
         doMovement();
 
 
-    telemetry.addData("Path", "Complete");
-    telemetry.update();
-}
+        telemetry.addData("Path", "Complete");
+        telemetry.update();
+    }
 
     /*public void rangeInit() {
         RANGE1 = hardwareMap.i2cDevice.get("xc_sensor");
@@ -213,10 +208,9 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
         shootBall(-DRIVE_SPEED, 2);
 
-//        * 45 degrees left
+//        * 45 degrees right
 
-        //encoderDrive(TURN_SPEED, -11, 11, 10);
-        sandwichTurn(TURN_SPEED, -45, 10);
+        encoderDrive(TURN_SPEED, 11, -11, 10);
 
 //        * forward to align with wall
 
@@ -224,21 +218,20 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
 //        * 45 degrees left
 
-        //sandwichTurn(TURN_SPEED, -45, 10);
-        sandwichTurn(TURN_SPEED, -45, 10);
+        encoderDrive(TURN_SPEED, 11, -11, 10);
 
 //        * forward to near corner vortex
 
-        encoderDrive(DRIVE_SPEED, -28, -28, 10);
+        encoderDrive(DRIVE_SPEED, -24, -24, 10);
 
 //        * 90 degrees right
 
-        sandwichTurn(TURN_SPEED, 90, 10);
+        encoderDrive(TURN_SPEED, -24, 24, 10);
 
-        encoderDrive(DRIVE_SPEED, -4, -4, 10);
+        encoderDrive(DRIVE_SPEED,-4,-4,10);
 
 //        * strafe into wall
-        encoderStrafe(TURN_SPEED, .8);
+        encoderStrafe(-TURN_SPEED,1.8);
 
 //        * back away from wall - work in progress
         //roberto.XCountrySensor.getUltrasonicLevel();
@@ -266,7 +259,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
 //        * strafe right to bacon
 
-        encoderStrafe(TURN_SPEED, 0.6);
+        encoderStrafe(-TURN_SPEED, 0.6);
 
 //        * pause for 5 seconds
 
@@ -286,26 +279,26 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 //        * determine color and position to score
 
         if(roberto.baconSensor.red() > roberto.baconSensor.blue()){
-            encoderStrafe(TURN_SPEED, 0.5);
-            encoderStrafe(-TURN_SPEED, 1);
+            encoderStrafe(-TURN_SPEED, 0.5);
+            encoderStrafe(TURN_SPEED, 1);
         }
         else if(roberto.baconSensor.blue() > roberto.baconSensor.red()){
-            encoderDrive(TURN_SPEED, 5, 5, 5);
-            encoderStrafe(TURN_SPEED, 0.5);
-            encoderStrafe(-TURN_SPEED, 1);
+            encoderDrive(-TURN_SPEED, 5, 5, 5);
+            encoderStrafe(-TURN_SPEED, 0.5);
+            encoderStrafe(TURN_SPEED, 1);
         }
 
 //        * forward to next white line
 
 //        * forward halfway to next white line
-        encoderDrive(TURN_SPEED, -6, -6, 10);
+        encoderDrive(-TURN_SPEED, -6, -6, 10);
 
 //        * strafe into wall and strafe away to straighten robot
-        encoderStrafe(TURN_SPEED,1);
-        encoderStrafe(-TURN_SPEED,0.5);
+        encoderStrafe(-TURN_SPEED,1);
+        encoderStrafe(TURN_SPEED,0.5);
 
 //        * all the way to next white line
-        encoderDrive(TURN_SPEED, -4, -4, 10);
+        encoderDrive(-TURN_SPEED, -4, -4, 10);
 
         roberto.driveMotorFrontRight.setPower(-0.4);
         roberto.driveMotorFrontLeft.setPower(-0.4);
@@ -341,27 +334,28 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 //        * determine color and position to score
 
         if(roberto.baconSensor.red() > roberto.baconSensor.blue()){
-            encoderStrafe(TURN_SPEED, 0.5);
-            encoderStrafe(-TURN_SPEED, 1);
+            encoderStrafe(-TURN_SPEED, 0.5);
+            encoderStrafe(TURN_SPEED, 1);
         }
         else if(roberto.baconSensor.blue() > roberto.baconSensor.red()){
-            encoderDrive(TURN_SPEED, 5, 5, 5);
-            encoderStrafe(TURN_SPEED, 0.5);
-            encoderStrafe(-TURN_SPEED, 1);
+            encoderDrive(-TURN_SPEED, 5, 5, 5);
+            encoderStrafe(-TURN_SPEED, 0.5);
+            encoderStrafe(TURN_SPEED, 1);
         }
 //        * 45 degrees right
 
-        //encoderDrive(DRIVE_SPEED, 12, -12, 10);
-        sandwichTurn(TURN_SPEED, 45, 10);
+        encoderDrive(DRIVE_SPEED, -12, 12, 10);
 
 //        * find boundary
 
-        encoderDrive(DRIVE_SPEED, 12, 12, 10);
+        while(opModeIsActive()){
+            //I'm beginning to become suspicious of all these opModeIsActive() loops
+//             Stop whining and fix the darn thing instead!!!!!!
+        }
 
 //        * 90 degrees right
 
-        //encoderDrive(DRIVE_SPEED, 22, -22, 10);
-        sandwichTurn(TURN_SPEED, 90, 10);
+        encoderDrive(DRIVE_SPEED, -22, 22, 10);
 
 //        * forward to cap ball
 
@@ -407,7 +401,6 @@ public class OPBringHomeRedBacon extends LinearOpMode{
     // left turn is negative angle
     // right turn is positive angle
     public void sandwichTurn(double speed, double angle, double timeoutS)  throws InterruptedException{
-        int error;
 
         roberto.driveMotorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         roberto.driveMotorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -419,49 +412,29 @@ public class OPBringHomeRedBacon extends LinearOpMode{
         roberto.driveMotorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         roberto.driveMotorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        ((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue();
-
-        sandwichSensor.resetZAxisIntegrator();
+        roberto.sandwichSensor.resetZAxisIntegrator();
         if(angle > 0) {
-            roberto.driveMotorFrontLeft.setPower(-speed);
-            roberto.driveMotorFrontRight.setPower(speed);
-            roberto.driveMotorBackLeft.setPower(-speed);
-            roberto.driveMotorBackRight.setPower(speed);
-            runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() < timeoutS) &&
-                    (((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue() < angle)) {
-                telemetry.addData("Integ Z Val: ",((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue());
-                telemetry.update();
-            }
-        }
-        else if(angle < 0){
             roberto.driveMotorFrontLeft.setPower(speed);
             roberto.driveMotorFrontRight.setPower(-speed);
             roberto.driveMotorBackLeft.setPower(speed);
             roberto.driveMotorBackRight.setPower(-speed);
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < timeoutS) &&
-                    (((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue() < angle)) {
-                telemetry.addData("Integ Z Val: ",((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue());
+                    (roberto.sandwichSensor.getHeading() < angle)) {
+                telemetry.addData("heading: ", roberto.sandwichSensor.getHeading());
                 telemetry.update();
             }
         }
-        while(true){
-            error = ((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue();
-            if(error > angle + 2){
-                roberto.driveMotorFrontLeft.setPower(speed);
-                roberto.driveMotorFrontRight.setPower(-speed);
-                roberto.driveMotorBackLeft.setPower(speed);
-                roberto.driveMotorBackRight.setPower(-speed);
-            }
-            else if(error < angle - 2){
-                roberto.driveMotorFrontLeft.setPower(-speed);
-                roberto.driveMotorFrontRight.setPower(speed);
-                roberto.driveMotorBackLeft.setPower(-speed);
-                roberto.driveMotorBackRight.setPower(speed);
-            }
-            else if (angle + 2 > error && error > angle - 2){
-                break;
+        else if(angle < 0){
+            roberto.driveMotorFrontLeft.setPower(-speed);
+            roberto.driveMotorFrontRight.setPower(speed);
+            roberto.driveMotorBackLeft.setPower(-speed);
+            roberto.driveMotorBackRight.setPower(speed);
+            runtime.reset();
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) &&
+                    (roberto.sandwichSensor.getHeading() > 360 + angle)) {
+                telemetry.addData("heading: ", roberto.sandwichSensor.getHeading());
+                telemetry.update();
             }
         }
 
@@ -523,7 +496,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
                     (roberto.driveMotorFrontLeft.isBusy() && roberto.driveMotorFrontRight.isBusy() &&
-                     roberto.driveMotorBackLeft.isBusy() && roberto.driveMotorBackRight.isBusy())) {
+                            roberto.driveMotorBackLeft.isBusy() && roberto.driveMotorBackRight.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 error = getError(angle);
@@ -679,7 +652,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
         double robotError;
 
         // calculate error in -179 to +180 range  (
-        robotError = targetAngle - sandwichSensor.getHeading();
+        robotError = targetAngle - roberto.sandwichSensor.getHeading();
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;
@@ -696,5 +669,3 @@ public class OPBringHomeRedBacon extends LinearOpMode{
     }
 
 }
-
-
