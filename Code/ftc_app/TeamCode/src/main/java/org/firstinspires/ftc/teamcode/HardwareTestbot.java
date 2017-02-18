@@ -56,7 +56,7 @@ public class HardwareTestbot
     //public static ModernRoboticsI2cRangeSensor XCSensor;
     //public static UltrasonicSensor XCSensor;
 
-    I2cAddr RANGE1ADDRESS = new I2cAddr(0x14); //Default I2C address for MR Range (7-bit)
+    //I2cAddr RANGE1ADDRESS = new I2cAddr(0x14); //Default I2C address for MR Range (7-bit)
 
     public I2cDevice RANGE1;
     public I2cDeviceSynch RANGE1Reader;

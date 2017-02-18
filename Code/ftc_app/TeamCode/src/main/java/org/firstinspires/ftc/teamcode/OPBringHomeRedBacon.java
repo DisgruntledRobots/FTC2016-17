@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.robotcore.hardware.I2cDevice;
+/*import com.qualcomm.robotcore.hardware.I2cDevice;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynchImpl;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchImpl;*/
 
-import static org.firstinspires.ftc.teamcode.HardwareTestbot.sandwichSensor;
+//import static org.firstinspires.ftc.teamcode.HardwareTestbot.sandwichSensor;
 
 /**
  * Created by 5815-Disgruntled on 1/24/2017.
@@ -40,7 +40,6 @@ public class OPBringHomeRedBacon extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
 
-    //rangeInit();
     /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -65,8 +64,8 @@ public class OPBringHomeRedBacon extends LinearOpMode{
         roberto.racistSensor.enableLed(true);
         roberto.baconSensor.enableLed(true);
 
-        sandwichSensor.calibrate();
-
+        roberto.sandwichSensor.calibrate();
+        telemetry.addData("Gyro calibrated","You suck");
         //get initial color sensor value
         initGray = roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue();
 
@@ -75,38 +74,25 @@ public class OPBringHomeRedBacon extends LinearOpMode{
             telemetry.addData("Blue: ",roberto.baconSensor.blue());
             telemetry.addData("Init Gray: ", initGray);
             telemetry.addData("Racist Val: ", roberto.racistSensor.red() + roberto.racistSensor.green() + roberto.racistSensor.blue());
-            telemetry.addData("Heading: ", sandwichSensor.getHeading());
+            telemetry.addData("Heading: ", roberto.sandwichSensor.getHeading());
             telemetry.addData("Integ Z Val: ",((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue());
             telemetry.update();
             idle();
         }
-        sandwichSensor.resetZAxisIntegrator();
-
+        roberto.sandwichSensor.resetZAxisIntegrator();
+        telemetry.addData("Gyro z-axis integrator reset","You suck2");
     // Wait for the game to start (driver presses PLAY)
     // waitForStart();
 
 
     //Insert movement code here
-
+        telemetry.addData("Start moving now","Run!!!");
         doMovement();
 
 
     telemetry.addData("Path", "Complete");
     telemetry.update();
 }
-
-    /*public void rangeInit() {
-        RANGE1 = hardwareMap.i2cDevice.get("xc_sensor");
-        RANGE1Reader = new I2cDeviceSynchImpl(RANGE1, RANGE1ADDRESS, false);
-        RANGE1Reader.engage();
-    }
-
-    public void readRangeCM() {
-        range1Cache = RANGE1Reader.read(RANGE1_REG_START, RANGE1_READ_LENGTH);
-
-        telemetry.addData("Ultra Sonic", range1Cache[0] & 0xFF);
-        telemetry.addData("ODS", range1Cache[1] & 0xFF);
-    }*/
 
     public void encoderDrive(double speed,double leftInches, double rightInches,double timeoutS) throws InterruptedException {
         int newFrontLeftTarget;
@@ -224,7 +210,6 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
 //        * 45 degrees left
 
-        //sandwichTurn(TURN_SPEED, -45, 10);
         sandwichTurn(TURN_SPEED, -45, 10);
 
 //        * forward to near corner vortex
@@ -421,7 +406,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
 
         ((ModernRoboticsI2cGyro)roberto.sandwichSensor).getIntegratedZValue();
 
-        sandwichSensor.resetZAxisIntegrator();
+        roberto.sandwichSensor.resetZAxisIntegrator();
         if(angle > 0) {
             roberto.driveMotorFrontLeft.setPower(-speed);
             roberto.driveMotorFrontRight.setPower(speed);
@@ -679,7 +664,7 @@ public class OPBringHomeRedBacon extends LinearOpMode{
         double robotError;
 
         // calculate error in -179 to +180 range  (
-        robotError = targetAngle - sandwichSensor.getHeading();
+        robotError = targetAngle - roberto.sandwichSensor.getHeading();
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;

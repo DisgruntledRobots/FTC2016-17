@@ -216,7 +216,7 @@ public class OPBringHomeBlueBacon extends LinearOpMode {
 
         encoderDrive(DRIVE_SPEED, -21, -21, 10);
 
-//        * 45 degrees left
+//        * 45 degrees right
 
         encoderDrive(TURN_SPEED, 11, -11, 10);
 
@@ -224,7 +224,7 @@ public class OPBringHomeBlueBacon extends LinearOpMode {
 
         encoderDrive(DRIVE_SPEED, -24, -24, 10);
 
-//        * 90 degrees right
+//        * 90 degrees left
 
         encoderDrive(TURN_SPEED, -24, 24, 10);
 
